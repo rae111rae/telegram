@@ -6,6 +6,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\Exceptions\CouldNotSendNotification;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Class TelegramChannel.
@@ -70,6 +71,6 @@ class TelegramChannel
             throw $exception;
         }
 
-        return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        return $response instanceof Response ? json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response;
     }
 }
